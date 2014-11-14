@@ -1,17 +1,19 @@
 package com.marsman.fragment;
 
-import com.marsman.R;
-import com.marsman.adapter.GridImageAdapter;
-import com.marsman.app.MarsManApplication;
-
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 
-public class ImageFragment extends Fragment {
+import com.marsman.R;
+import com.marsman.activity.MarsActivity;
+import com.marsman.adapter.GridImageAdapter;
+
+public class ImageFragment extends Fragment implements OnItemClickListener {
 
 	private GridView imageGrid;
 	
@@ -37,7 +39,7 @@ public class ImageFragment extends Fragment {
 
 	private void initView(View view) {
 		imageGrid = (GridView) view.findViewById(R.id.gridImage);
-		
+		imageGrid.setOnItemClickListener(this);
 		initData();
 	}
 	
@@ -45,5 +47,14 @@ public class ImageFragment extends Fragment {
 		imageFragment = new GridImageAdapter(getActivity(), iamgeData);
 		imageGrid.setAdapter(imageFragment);
 
+	}
+
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		if(position==5){
+			((MarsActivity)getActivity()).mImageList.get(0).setBackgroundResource(R.drawable.glass);
+		}
 	}
 }

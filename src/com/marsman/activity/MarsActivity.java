@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -30,6 +31,7 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.RelativeLayout.LayoutParams;
@@ -58,11 +60,16 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 	private int widthPixels;
 	private int widthdp;
 	private LinearLayout bitmapImageLayout;
+	
+	private String[] mDataString = {"头发","脸型","帽子","鼻子","眼睛","嘴巴","眼镜"};
 
 	private ArrayList<Fragment> fragments;
 	private MyLogger myLogger = MyLogger.getLogger("MarsManApplication");
 
 	private Handler Handler = new Handler();
+	
+	private ImageView glass,bigImage;
+	public List<ImageView> mImageList = new ArrayList<ImageView>(); 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +110,28 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 		// mImageView.getLayoutParams().width = item_width;
 		bitmapImageLayout = (LinearLayout) findViewById(R.id.imageLayout);
 		pager = (ViewPager) findViewById(R.id.pager);
-
+		glass = (ImageView) findViewById(R.id.glass);
+		bigImage = (ImageView) findViewById(R.id.bigImage);
+		mImageList.add(glass);
+		
+		bigImage.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				bigImage.setVisibility(View.GONE);
+				
+			}
+		});
+		bitmapImageLayout.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				bitmapImageLayout.setDrawingCacheEnabled(true);
+				Bitmap bmp = bitmapImageLayout.getDrawingCache();
+				bigImage.setVisibility(View.VISIBLE);
+				bigImage.setImageBitmap(bmp);
+			}
+		});
 	}
 
 	private void initViewPager() {
@@ -128,7 +156,7 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 		for (int i = 0; i < 7; i++) {
 			RelativeLayout layout = new RelativeLayout(this);
 			TextView view = new TextView(this);
-			view.setText("第" + (i + 1) + "个");
+			view.setText(mDataString[i]);
 			RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
 					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			params.addRule(RelativeLayout.CENTER_IN_PARENT);
