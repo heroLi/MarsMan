@@ -32,9 +32,22 @@
             android:id="@+id/login_qq"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            />
+        <Button
+            android:id="@+id/login_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="头像"
+            android:layout_marginLeft="30dp"
             />
     </LinearLayout>
-    
-    
+   
+    <TextView 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:id="@+id/loginText"
+        />
     
 </LinearLayout>
