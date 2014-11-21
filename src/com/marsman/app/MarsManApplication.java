@@ -4,7 +4,9 @@ import java.io.File;
 
 import android.app.Application;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.marsman.R;
 import com.marsman.utils.MyLogger;
@@ -19,6 +21,8 @@ public class MarsManApplication extends Application {
 	public int[] Mars_Glass;
 	public int[] Mars_Hair;
 	
+	public static int witch;
+	public static int height;
 	public  String filePathString = "";
 	
 	private MyLogger myLogger = MyLogger.getLogger("MarsManApplication");
@@ -48,6 +52,13 @@ public class MarsManApplication extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		application = this;
+		WindowManager windowManager = (WindowManager) this
+				.getSystemService(WINDOW_SERVICE);
+		DisplayMetrics dm = new DisplayMetrics();
+		windowManager.getDefaultDisplay().getMetrics(dm);
+		witch = dm.widthPixels;
+		height = dm.heightPixels;
 		createSDCardDir();
 	}
 	public void createSDCardDir() {

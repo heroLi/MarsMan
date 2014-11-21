@@ -9,6 +9,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
@@ -60,16 +61,17 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 	private int widthPixels;
 	private int widthdp;
 	private LinearLayout bitmapImageLayout;
-	
-	private String[] mDataString = {"头发","脸型","帽子","鼻子","眼睛","嘴巴","眼镜"};
+
+	private String[] mDataString = { "发型", "脸", "眉毛", "眼睛", "嘴", "鼻子", "胡子",
+			"眼镜", "衣服", "帽子", "配饰", "背景", "表情", "口头禅" };
 
 	private ArrayList<Fragment> fragments;
 	private MyLogger myLogger = MyLogger.getLogger("MarsManApplication");
 
 	private Handler Handler = new Handler();
-	
-	private ImageView glass,bigImage;
-	public List<ImageView> mImageList = new ArrayList<ImageView>(); 
+
+	private ImageView glass, bigImage;
+	public List<ImageView> mImageList = new ArrayList<ImageView>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -85,19 +87,26 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 		// 初始化viewPager
 		initViewPager();
 
-		Handler.postDelayed(new Runnable() {
+	}
 
+	@Override
+	protected void onResume() {
+		// TODO Auto-generated method stub
+		super.onResume();
+		
+		Handler.postDelayed(new Runnable() {
+			
 			@Override
 			public void run() {
 				try {
 					saveMyBitmap(100);
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-
+				
 			}
 		}, 2000);
+		
 	}
 
 	private void initView() {
@@ -113,17 +122,17 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 		glass = (ImageView) findViewById(R.id.glass);
 		bigImage = (ImageView) findViewById(R.id.bigImage);
 		mImageList.add(glass);
-		
+
 		bigImage.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				bigImage.setVisibility(View.GONE);
-				
+
 			}
 		});
 		bitmapImageLayout.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				bitmapImageLayout.setDrawingCacheEnabled(true);
@@ -283,14 +292,12 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 
 	public void saveMyBitmap(int percent) throws IOException {
 
-		// Bitmap bmp = bitmapImageLayout.getDrawingCache();//
-		// 这里的drawable2Bitmap方法是我把ImageView中
-		// 的drawable转化成bitmap，当然实验的时候可以自己创建bitmap
-		// Bitmap bmp = convertViewToBitmap(bitmapImageLayout);//
-		// 这里的drawable2Bitmap方法是我把ImageView中//
 		bitmapImageLayout.setDrawingCacheEnabled(true);
 		Bitmap bmp = bitmapImageLayout.getDrawingCache();// 这里的drawable2Bitmap方法是我把ImageView中//
-															// 的drawable转化成bitmap，当然实验的时候可以自己创建bitmap
+
+		myLogger.d("---Scren w----" + MarsManApplication.witch);
+		Bitmap bitmap = Bitmap.createScaledBitmap(bmp,
+				MarsManApplication.witch, MarsManApplication.witch, false);
 
 		String file = Environment.getExternalStoragePublicDirectory(
 				Environment.DIRECTORY_PICTURES).getAbsolutePath()
@@ -305,7 +312,7 @@ public class MarsActivity extends FragmentActivity implements OnClickListener {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		bmp.compress(Bitmap.CompressFormat.JPEG, percent, fOut);
+		bitmap.compress(Bitmap.CompressFormat.JPEG, percent, fOut);
 		try {
 			fOut.flush();
 		} catch (IOException e) {
